@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Little Surprise For You!</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #ec4899;
+      --accent-hover: #db2777;
+      --text: #f8fafc;
+      --subtext: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      height: 90vh;
+      max-height: 750px;
+      background-color: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+
+    .step.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .emoji {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    p {
+      color: var(--subtext);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .btn {
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+      outline: none;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Step 3: Dodging NO Button */
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      position: relative;
+      width: 100%;
+      justify-content: center;
+      margin-top: 1rem;
+      min-height: 60px;
+    }
+
+    #noBtn {
+      background-color: #475569;
+      position: absolute;
+      transition: all 0.15s ease-out;
+    }
+
+    #yesBtn {
+      position: absolute;
+      left: 20%;
+    }
+
+    /* Gallery Styling */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 110px;
+      background-color: #334155;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--subtext);
+      object-fit: cover;
+    }
+
+    /* Message Box Styling */
+    .message-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.2rem;
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      color: #cbd5e1;
+    }
+
+    /* Music Player Card */
+    .audio-card {
+      background: #0f172a;
+      width: 100%;
+      padding: 1rem;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .play-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="step active" id="step1">
+      <div class="emoji">😏</div>
+      <h1>Hey! Don’t swipe yet…</h1>
+      <p>I have something quick to tell you before you go.</p>
+      <button class="btn" onclick="nextStep(2)">Next</button>
+    </div>
+
+    <div class="step" id="step2">
+      <div class="emoji">😂</div>
+      <h1>I have a tiny question for you.</h1>
+      <p>Are you ready for what comes next?</p>
+      <button class="btn" onclick="nextStep(3)">Continue</button>
+    </div>
+
+    <div class="step" id="step3">
+      <div class="emoji">👀</div>
+      <h1>Are you ready for a surprise?</h1>
+      <p>Choose wisely...</p>
+      <div class="btn-group" id="btnContainer">
+        <button class="btn" id="yesBtn" onclick="nextStep(4)">YES!</button>
+        <button class="btn" id="noBtn" onmouseover="dodgeButton()" onclick="dodgeButton()">NO</button>
+      </div>
+    </div>
+
+    <div class="step" id="step4">
+      <div class="emoji">📸</div>
+      <h1>Okay, you passed!</h1>
+      <p>Here are some of the best memories.</p>
+      <div class="gallery">
+        <div class="gallery-img">📷 Memory 1</div>
+        <div class="gallery-img">📷 Memory 2</div>
+        <div class="gallery-img">📷 Memory 3</div>
+        <div class="gallery-img">📷 Memory 4</div>
+      </div>
+      <button class="btn" onclick="nextStep(5)">View Message</button>
+    </div>
+
+    <div class="step" id="step5">
+      <div class="emoji">💌</div>
+      <h1>A little message for you…</h1>
+      <div class="message-card">
+        "You survived the test, which means you're officially stuck with me! No returns, no exchanges, and no trade-ins allowed. 😜"
+      </div>
+      <button class="btn" onclick="nextStep(6)">Listen to Track</button>
+    </div>
+
+    <div class="step" id="step6">
+      <div class="emoji">🎵</div>
+      <h1>Press play for the special song.</h1>
+      <p>Set the vibe before the final reveal!</p>
+      <div class="audio-card">
+        <button class="play-btn" id="playAudioBtn" onclick="togglePlay()">▶</button>
+        <div style="text-align: left;">
+          <div style="font-weight: 600; font-size: 0.9rem;">Special Soundtrack</div>
+          <div style="font-size: 0.75rem; color: var(--subtext);">Playing your vibe...</div>
+        </div>
+      </div>
+      <button class="btn" onclick="nextStep(7)">Unlock Final Surprise</button>
+    </div>
+
+    <div class="step" id="step7">
+      <div class="emoji">🎁</div>
+      <h1>Final surprise unlocked!</h1>
+      <p>Thanks for being awesome (even when you're annoying me). Here’s to making a million more memories together! 🥳✨</p>
+      <button class="btn" onclick="nextStep(1)">Start Over</button>
+    </div>
+
+  </div>
+
+  <script>
+    function nextStep(stepNumber) {
+      document.querySelectorAll('.step').forEach(step => {
+        step.classList.remove('active');
+      });
+      document.getElementById('step' + stepNumber).classList.add('active');
+      
+      // Reset dodging button position when visiting step 3
+      if (stepNumber === 3) {
+        const noBtn = document.getElementById('noBtn');
+        noBtn.style.left = '55%';
+        noBtn.style.top = '0px';
+      }
+    }
+
+    function dodgeButton() {
+      const noBtn = document.getElementById('noBtn');
+      const container = document.getElementById('btnContainer');
+
+      const containerRect = container.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      // Calculate safe random coordinates within container limits
+      const maxX = containerRect.width - btnRect.width;
+      const maxY = 120; // Allow moving vertically down a bit
+
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY) - 40;
+
+      noBtn.style.left = randomX + 'px';
+      noBtn.style.top = randomY + 'px';
+    }
+
+    let isPlaying = false;
+    function togglePlay() {
+      const btn = document.getElementById('playAudioBtn');
+      isPlaying = !isPlaying;
+      btn.innerText = isPlaying ? '⏸' : '▶';
+    }
+  </script>
+</body>
+</html>
